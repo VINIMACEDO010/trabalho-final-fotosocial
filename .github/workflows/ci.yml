@@ -1,0 +1,38 @@
+name: CI - FotoSocial API
+
+# Roda a cada push ou pull request na branch main
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Baixa o código do repositório para o ambiente de execução
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      # Configura o Python na mesma versão usada no desenvolvimento
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Instala Flask, pytest e flake8 listados no requirements.txt
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+
+      # Analisa o código em busca de erros de sintaxe e formatação
+      # E501 ignorado para não bloquear linhas um pouco mais longas
+      - name: Lint com flake8
+        run: flake8 api/app.py --ignore=E501
+
+      # Executa os 4 testes unitários com saída detalhada
+      - name: Executar testes
+        run: python -m pytest api/tests/ -v
