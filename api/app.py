@@ -39,7 +39,7 @@ def buscar_foto(foto_id):
         foto = next((f for f in fotos if f['id'] == foto_id), None)
 
         if foto is None:
-            return jsonify({"erro": f"Foto {foto_id} não encontrada"}), 404
+            return jsonify({"erro": f"Foto {foto_id} nao encontrada"}), 404
 
         return jsonify(foto), 200
     except Exception:
