@@ -46,5 +46,19 @@ def buscar_foto(foto_id):
         return jsonify({"erro": "Erro interno"}), 500
 
 
+@app.route('/fotos/categoria/<string:categoria>')
+def buscar_por_categoria(categoria):
+    try:
+        fotos = carregar_fotos()
+        resultado = [f for f in fotos if f['categoria'] == categoria]
+
+        if not resultado:
+            return jsonify({"erro": f"Nenhuma foto na categoria '{categoria}'"}), 404
+
+        return jsonify({"total": len(resultado), "fotos": resultado}), 200
+    except Exception:
+        return jsonify({"erro": "Erro interno"}), 500
+
+
 if __name__ == '__main__':
     app.run(debug=True)
